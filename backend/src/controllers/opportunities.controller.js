@@ -3,6 +3,7 @@ import {
   getOpportunityById,
   createOpportunity,
   updateOpportunity,
+  updateOpportunityStatus,
   deleteOpportunity,
   searchOpportunities
 } from '../services/opportunities.service.js';
@@ -44,6 +45,20 @@ export async function handleUpdate(req, res, next) {
   try {
     const oppData = OpportunitySchema.partial().parse(req.body);
     const opportunity = await updateOpportunity(req.userId, req.params.id, oppData);
+    res.json({ opportunity });
+  } catch (err) {
+    next(err);
+  }
+}
+
+export async function handleUpdateStatus(req, res, next) {
+  try {
+    const { status } = req.body;
+    const validStatuses = ['saved', 'applied', 'interview', 'accepted', 'rejected'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
+    }
+    const opportunity = await updateOpportunityStatus(req.userId, req.params.id, status);
     res.json({ opportunity });
   } catch (err) {
     next(err);

@@ -11,6 +11,7 @@ import opportunitiesRoutes from './src/routes/opportunities.routes.js';
 import scraperRoutes from './src/routes/scraper.routes.js';
 import strategyRoutes from './src/routes/strategy.routes.js';
 import historyRoutes from './src/routes/history.routes.js';
+import dashboardRoutes from './src/routes/dashboard.routes.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 
 const app = express();
@@ -34,6 +35,7 @@ app.use('/api/opportunities', opportunitiesRoutes);
 app.use('/api/scraper', scraperRoutes);
 app.use('/api/strategy', strategyRoutes);
 app.use('/api/history', historyRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

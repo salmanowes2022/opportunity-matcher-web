@@ -58,6 +58,19 @@ export async function deleteOpportunity(userId, id) {
   return true;
 }
 
+export async function updateOpportunityStatus(userId, id, status) {
+  const { data, error } = await supabase
+    .from('opportunities')
+    .update({ status })
+    .eq('id', id)
+    .eq('user_id', userId)
+    .select()
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
 export async function searchOpportunities(userId, query) {
   const { data, error } = await supabase
     .from('opportunities')
