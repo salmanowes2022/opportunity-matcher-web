@@ -86,7 +86,7 @@ function ScrapeModal({ onImport, onClose }) {
       const data = await scrapeUrl(url);
       onImport(data);
     } catch (err) {
-      setError(err.response?.data?.error || 'Failed to scrape URL');
+      setError(err.response?.data?.error || err.message || 'Failed to import from URL. Try copying the details manually.');
     } finally {
       setLoading(false);
     }

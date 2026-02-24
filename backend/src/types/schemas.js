@@ -50,7 +50,7 @@ export const ApplicationMaterialSchema = z.object({
 export const DocumentAnalysisSchema = z.object({
   document_type: z.string(),
   extracted_text: z.string(),
-  key_information: z.record(z.string()).default({}),
+  key_information: z.record(z.unknown()).default({}),
   suggestions: z.string(),
   confidence_score: z.number().min(0).max(1)
 });

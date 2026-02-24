@@ -1,14 +1,11 @@
 import openai from '../../config/openai.js';
+import { getGeminiModel } from '../../config/gemini.js';
 import { DocumentAnalysisSchema } from '../../types/schemas.js';
 
-export async function analyzeDocumentImage(imageBuffer, mimeType, documentTypeHint = null) {
-  const base64Image = imageBuffer.toString('base64');
-  const dataUrl = `data:${mimeType};base64,${base64Image}`;
-
-  const systemPrompt = `You are an expert document analyzer specializing in academic and professional documents.
+const ANALYSIS_PROMPT = `You are an expert document analyzer specializing in academic and professional documents.
 
 Your task is to:
-1. Read and transcribe all text from the image accurately
+1. Read and transcribe all text from the document accurately
 2. Identify what type of document this is (CV/Resume, Transcript, Certificate, Cover Letter, etc.)
 3. Extract key structured information relevant for job/scholarship applications
 4. Assess the quality and completeness of the document
@@ -24,12 +21,7 @@ Focus on extracting:
 - Dates and durations
 
 Be thorough but only extract information that's clearly visible and readable.
-Return a JSON object with these exact fields: document_type, extracted_text, key_information (object), suggestions, confidence_score.`;
-
-  const humanPrompt = `Please analyze this document image and provide a comprehensive analysis.
-Document type hint: ${documentTypeHint || 'Unknown - please identify'}
-
-Return ONLY a valid JSON object with:
+Return ONLY a valid JSON object with these exact fields:
 {
   "document_type": "CV/Resume|Transcript|Certificate|Other",
   "extracted_text": "full transcription of visible text",
@@ -38,36 +30,77 @@ Return ONLY a valid JSON object with:
   "confidence_score": 0.0 to 1.0
 }`;
 
-  try {
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      temperature: 0.1,
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: systemPrompt },
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: humanPrompt },
-            {
-              type: 'image_url',
-              image_url: { url: dataUrl, detail: 'high' }
-            }
-          ]
-        }
-      ]
-    });
+async function analyzeWithGemini(fileBuffer, mimeType, documentTypeHint) {
+  const model = getGeminiModel('gemini-2.5-flash');
+  const base64Data = fileBuffer.toString('base64');
 
-    const rawJson = JSON.parse(completion.choices[0].message.content);
-    return DocumentAnalysisSchema.parse(rawJson);
+  const result = await model.generateContent([
+    {
+      inlineData: {
+        mimeType,
+        data: base64Data,
+      },
+    },
+    `${ANALYSIS_PROMPT}\n\nDocument type hint: ${documentTypeHint || 'Unknown - please identify'}\n\nReturn ONLY the JSON object.`,
+  ]);
+
+  const text = result.response.text().trim();
+  // Strip markdown code fences if present
+  const jsonStr = text.replace(/^```(?:json)?\n?/, '').replace(/\n?```$/, '');
+  return JSON.parse(jsonStr);
+}
+
+async function analyzeWithOpenAI(fileBuffer, mimeType, documentTypeHint) {
+  const base64Image = fileBuffer.toString('base64');
+  const dataUrl = `data:${mimeType};base64,${base64Image}`;
+
+  const humanPrompt = `Please analyze this document and provide a comprehensive analysis.
+Document type hint: ${documentTypeHint || 'Unknown - please identify'}
+
+${ANALYSIS_PROMPT}`;
+
+  const completion = await openai.chat.completions.create({
+    model: 'gpt-4o-mini',
+    temperature: 0.1,
+    response_format: { type: 'json_object' },
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: humanPrompt },
+          {
+            type: 'image_url',
+            image_url: { url: dataUrl, detail: 'high' }
+          }
+        ]
+      }
+    ]
+  });
+
+  return JSON.parse(completion.choices[0].message.content);
+}
+
+export async function analyzeDocumentImage(imageBuffer, mimeType, documentTypeHint = null) {
+  try {
+    let rawJson;
+
+    if (mimeType === 'application/pdf') {
+      // Gemini natively supports PDF documents
+      rawJson = await analyzeWithGemini(imageBuffer, mimeType, documentTypeHint);
+    } else {
+      // Images go to OpenAI vision
+      rawJson = await analyzeWithOpenAI(imageBuffer, mimeType, documentTypeHint);
+    }
+
+    const parsed = DocumentAnalysisSchema.parse(rawJson);
+    // Flatten any nested objects/arrays in key_information to strings
+    const flatInfo = {};
+    for (const [k, v] of Object.entries(parsed.key_information)) {
+      flatInfo[k] = typeof v === 'string' ? v : JSON.stringify(v);
+    }
+    return { ...parsed, key_information: flatInfo };
   } catch (error) {
-    return {
-      document_type: 'Error',
-      extracted_text: `Error analyzing document: ${error.message}`,
-      key_information: {},
-      suggestions: 'Please try uploading a clearer image or check your API configuration.',
-      confidence_score: 0.0
-    };
+    throw new Error(`Document analysis failed: ${error.message}`);
   }
 }
 
