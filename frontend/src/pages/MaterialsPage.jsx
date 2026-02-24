@@ -66,7 +66,7 @@ export default function MaterialsPage() {
   };
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper title="Generate Materials" subtitle="AI-powered cover letters, personal statements, and motivation letters">
         <div className="flex gap-2 mb-6">
           <button onClick={() => setTab('generate')} className={tab === 'generate' ? 'btn-primary' : 'btn-secondary'}>✍️ Generate</button>

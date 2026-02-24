@@ -3,7 +3,7 @@ import supabase from '../config/supabase.js';
 export async function getDashboardStats(userId) {
   const [oppsResult, historyResult, materialsResult] = await Promise.all([
     supabase.from('opportunities').select('id, title, opp_type, deadline, status, saved_at').eq('user_id', userId),
-    supabase.from('evaluation_history').select('compatibility_score, evaluated_at').eq('user_id', userId).order('evaluated_at', { ascending: false }),
+    supabase.from('match_results').select('compatibility_score, evaluated_at').eq('user_id', userId).order('evaluated_at', { ascending: false }),
     supabase.from('generated_materials').select('id').eq('user_id', userId),
   ]);
 
@@ -24,6 +24,13 @@ export async function getDashboardStats(userId) {
   const avgScore = scores.length ? scores.reduce((a, b) => a + b, 0) / scores.length : 0;
   const bestScore = scores.length ? Math.max(...scores) : 0;
 
+  // Score distribution
+  const score_distribution = {
+    excellent: scores.filter(s => s >= 0.7).length,
+    good: scores.filter(s => s >= 0.5 && s < 0.7).length,
+    needs_work: scores.filter(s => s < 0.5).length,
+  };
+
   // Application status breakdown
   const statusBreakdown = opps.reduce((acc, o) => {
     const s = o.status || 'saved';
@@ -31,7 +38,13 @@ export async function getDashboardStats(userId) {
     return acc;
   }, {});
 
-  // Recent activity (last 5 evaluations with opp info)
+  // Opportunity type breakdown
+  const type_breakdown = opps.reduce((acc, o) => {
+    acc[o.opp_type] = (acc[o.opp_type] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Recent activity (last 5 evaluations)
   const recentActivity = history.slice(0, 5);
 
   return {
@@ -42,6 +55,8 @@ export async function getDashboardStats(userId) {
     best_score: Math.round(bestScore * 100),
     upcoming_deadlines: upcoming,
     status_breakdown: statusBreakdown,
+    type_breakdown,
+    score_distribution,
     recent_activity: recentActivity,
   };
 }

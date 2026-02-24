@@ -7,8 +7,14 @@ import {
 
 export async function handleGetHistory(req, res, next) {
   try {
-    const history = await getHistory(req.userId);
-    res.json({ history });
+    const limit = Math.min(parseInt(req.query.limit) || 20, 100);
+    const offset = parseInt(req.query.offset) || 0;
+    const search = req.query.search || '';
+    const minScore = parseFloat(req.query.min_score) || 0;
+    const maxScore = parseFloat(req.query.max_score) || 1;
+
+    const { items, total } = await getHistory(req.userId, { limit, offset, search, minScore, maxScore });
+    res.json({ history: items, total, limit, offset });
   } catch (err) {
     next(err);
   }

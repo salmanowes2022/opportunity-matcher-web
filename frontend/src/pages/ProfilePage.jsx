@@ -19,11 +19,11 @@ export default function ProfilePage() {
   };
 
   if (loading) return (
-    <div className="ml-64 p-8"><LoadingSpinner text="Loading profile..." /></div>
+    <div className="p-8"><LoadingSpinner text="Loading profile..." /></div>
   );
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper
         title="My Profile"
         subtitle="Your profile is used for all opportunity matching and material generation"

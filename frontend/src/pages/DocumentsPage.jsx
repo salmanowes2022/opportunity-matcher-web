@@ -131,7 +131,7 @@ export default function DocumentsPage() {
   const keyInfoEntries = analysis ? Object.entries(analysis.key_information) : [];
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper title="Upload Documents" subtitle="Upload CVs, transcripts, or certificates to extract your profile automatically">
         <div className="grid lg:grid-cols-5 gap-6 items-start">
 

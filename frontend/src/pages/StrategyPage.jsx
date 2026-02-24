@@ -385,7 +385,7 @@ export default function StrategyPage() {
   const selectedMode = STRATEGY_MODES.find(m => m.key === mode);
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper title="AI Strategy" subtitle="Let AI build your personalized opportunity strategy">
         <div className="grid lg:grid-cols-3 gap-6 items-start">
 

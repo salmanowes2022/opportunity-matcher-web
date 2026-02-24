@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { getScoreColor } from '../../utils/scoreHelpers';
 import CompatibilityGauge from './CompatibilityGauge';
 import { useNavigate } from 'react-router-dom';
+import { exportMatchPDF } from '../../api/match.api';
 
 // Parse text into bullet points
 function parseBullets(text) {
@@ -49,14 +50,27 @@ function DimensionBar({ label, score }) {
 
 const TABS = ['Overview', 'Strengths', 'Gaps', 'Action'];
 
-export default function MatchResultCard({ result, opportunityTitle }) {
+export default function MatchResultCard({ result, opportunityTitle, opportunity }) {
   const [tab, setTab] = useState('Overview');
+  const [exporting, setExporting] = useState(false);
   const colors = getScoreColor(result.compatibility_score);
   const navigate = useNavigate();
   const dimensions = inferDimensions(result);
   const strengthBullets = parseBullets(result.strengths);
   const gapBullets = parseBullets(result.gaps);
   const recBullets = parseBullets(result.recommendation);
+
+  const handleExportPDF = async () => {
+    setExporting(true);
+    try {
+      const opp = opportunity || { title: opportunityTitle, opp_type: 'Opportunity', description: '', requirements: '' };
+      await exportMatchPDF(opp, result);
+    } catch (err) {
+      console.error('PDF export failed:', err);
+    } finally {
+      setExporting(false);
+    }
+  };
 
   return (
     <div className="card overflow-hidden">
@@ -67,9 +81,18 @@ export default function MatchResultCard({ result, opportunityTitle }) {
           <div className="flex-1 min-w-0 pt-2">
             <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-0.5">Match Result</p>
             <h3 className="text-base font-bold text-gray-900 leading-snug mb-2">{opportunityTitle}</h3>
-            <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}>
-              {colors.label}
-            </span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}>
+                {colors.label}
+              </span>
+              <button
+                onClick={handleExportPDF}
+                disabled={exporting}
+                className="text-xs px-2.5 py-1 rounded-lg border border-gray-200 bg-white text-gray-500 hover:border-gray-300 hover:text-gray-700 transition-colors flex items-center gap-1"
+              >
+                {exporting ? '⏳' : '📥'} {exporting ? 'Exporting…' : 'Export PDF'}
+              </button>
+            </div>
           </div>
         </div>
 

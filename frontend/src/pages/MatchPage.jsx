@@ -48,7 +48,7 @@ export default function MatchPage() {
   };
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper title="Check Match" subtitle="Paste any opportunity and see how well you match it">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Left: Form */}
@@ -91,7 +91,7 @@ export default function MatchPage() {
           <div>
             {loading && <LoadingSpinner text="AI is evaluating your match..." />}
             {result && !loading && (
-              <MatchResultCard result={result} opportunityTitle={opp.title} />
+              <MatchResultCard result={result} opportunityTitle={opp.title} opportunity={opp} />
             )}
             {!result && !loading && (
               <div className="card p-6 flex flex-col items-center justify-center h-full min-h-[300px] text-center">

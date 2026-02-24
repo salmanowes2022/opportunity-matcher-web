@@ -1,14 +1,22 @@
 import supabase from '../config/supabase.js';
 
-export async function getHistory(userId) {
-  const { data, error } = await supabase
+export async function getHistory(userId, { limit = 20, offset = 0, search = '', minScore = 0, maxScore = 1 } = {}) {
+  let query = supabase
     .from('match_results')
-    .select('*')
+    .select('*', { count: 'exact' })
     .eq('user_id', userId)
-    .order('evaluated_at', { ascending: false });
+    .gte('compatibility_score', minScore)
+    .lte('compatibility_score', maxScore)
+    .order('evaluated_at', { ascending: false })
+    .range(offset, offset + limit - 1);
 
+  if (search) {
+    query = query.ilike('opportunity_title', `%${search}%`);
+  }
+
+  const { data, error, count } = await query;
   if (error) throw error;
-  return data;
+  return { items: data, total: count };
 }
 
 export async function getHistoryById(userId, id) {
@@ -58,8 +66,9 @@ export async function deleteHistoryItem(userId, id) {
 export async function getHistoryStats(userId) {
   const { data: results, error } = await supabase
     .from('match_results')
-    .select('compatibility_score')
-    .eq('user_id', userId);
+    .select('compatibility_score, evaluated_at')
+    .eq('user_id', userId)
+    .order('evaluated_at', { ascending: true });
 
   if (error) throw error;
 
@@ -76,10 +85,28 @@ export async function getHistoryStats(userId) {
     ? Math.max(...results.map(r => Number(r.compatibility_score)))
     : 0;
 
+  // Score trend: group by month for last 6 months
+  const trend = {};
+  results.forEach(r => {
+    const month = r.evaluated_at?.slice(0, 7);
+    if (!month) return;
+    if (!trend[month]) trend[month] = { sum: 0, count: 0 };
+    trend[month].sum += Number(r.compatibility_score);
+    trend[month].count += 1;
+  });
+  const score_trend = Object.entries(trend)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .slice(-6)
+    .map(([month, { sum, count }]) => ({
+      month,
+      avg: Math.round((sum / count) * 100)
+    }));
+
   return {
     total,
     avg_score: Math.round(avgScore * 1000) / 1000,
     best_match: bestMatch,
-    materials_generated: materialsCount || 0
+    materials_generated: materialsCount || 0,
+    score_trend
   };
 }

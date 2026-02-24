@@ -117,7 +117,7 @@ export default function TrackerPage() {
   }, [showToast]);
 
   if (loading) return (
-    <div className="ml-64 flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen">
       <LoadingSpinner text="Loading tracker..." />
     </div>
   );
@@ -134,7 +134,7 @@ export default function TrackerPage() {
     : null;
 
   return (
-    <div className="ml-64">
+    <div>
       <PageWrapper
         title="Application Tracker"
         subtitle="Track your application progress from saved to accepted"

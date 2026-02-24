@@ -3,7 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import PageWrapper from '../components/layout/PageWrapper';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { getDashboard } from '../api/dashboard.api';
+import { getHistoryStats } from '../api/history.api';
 import { useProfile } from '../hooks/useProfile';
+import {
+  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend
+} from 'recharts';
 
 function StatCard({ icon, label, value, sub, color = 'primary', onClick }) {
   const colors = {
@@ -82,13 +87,14 @@ const STATUS_LABELS = {
 
 export default function DashboardPage() {
   const [stats, setStats] = useState(null);
+  const [historyStats, setHistoryStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const { profile } = useProfile();
   const navigate = useNavigate();
 
   useEffect(() => {
-    getDashboard()
-      .then(setStats)
+    Promise.all([getDashboard(), getHistoryStats()])
+      .then(([d, h]) => { setStats(d); setHistoryStats(h); })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -99,7 +105,7 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="ml-64 flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner text="Loading your dashboard..." />
       </div>
     );
@@ -109,9 +115,22 @@ export default function DashboardPage() {
   const upcomingDeadlines = stats?.upcoming_deadlines || [];
 
   return (
-    <div className="ml-64">
+    <div>
       <div className="min-h-screen bg-gray-50">
         <div className="max-w-5xl mx-auto px-6 py-8">
+
+          {/* Onboarding banner for new users */}
+          {!loading && !profile && (
+            <div className="mb-6 p-4 bg-primary-50 border border-primary-200 rounded-2xl flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-semibold text-primary-800">👋 Welcome! Get started in 3 easy steps</p>
+                <p className="text-sm text-primary-600 mt-0.5">Upload your CV to auto-fill your profile and start matching opportunities</p>
+              </div>
+              <button onClick={() => navigate('/onboarding')} className="btn-primary text-sm px-5 flex-shrink-0">
+                Start Setup →
+              </button>
+            </div>
+          )}
 
           {/* Greeting */}
           <div className="mb-8">
@@ -215,6 +234,28 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </div>
+
+              {/* Score Trend Chart */}
+              {historyStats?.score_trend?.length > 1 && (
+                <div className="card p-5">
+                  <h2 className="font-semibold text-gray-800 mb-4">📈 Score Trend</h2>
+                  <ResponsiveContainer width="100%" height={160}>
+                    <AreaChart data={historyStats.score_trend} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="scoreGrad" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#6366f1" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                      <XAxis dataKey="month" tick={{ fontSize: 10 }} tickFormatter={m => m?.slice(5)} />
+                      <YAxis tick={{ fontSize: 10 }} domain={[0, 100]} tickFormatter={v => `${v}%`} />
+                      <Tooltip formatter={(v) => [`${v}%`, 'Avg Score']} labelFormatter={m => `Month: ${m}`} />
+                      <Area type="monotone" dataKey="avg" stroke="#6366f1" strokeWidth={2} fill="url(#scoreGrad)" dot={{ r: 3, fill: '#6366f1' }} />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              )}
             </div>
 
             {/* Right column */}
@@ -244,6 +285,39 @@ export default function DashboardPage() {
                   </div>
                 )}
               </div>
+
+              {/* Match Score Distribution */}
+              {stats?.score_distribution && stats.total_evaluations > 0 && (() => {
+                const dist = stats.score_distribution;
+                const pieData = [
+                  { name: 'Excellent (70%+)', value: dist.excellent || 0, color: '#22c55e' },
+                  { name: 'Good (50–69%)', value: dist.good || 0, color: '#f59e0b' },
+                  { name: 'Needs Work (<50%)', value: dist.needs_work || 0, color: '#ef4444' },
+                ].filter(d => d.value > 0);
+                if (!pieData.length) return null;
+                return (
+                  <div className="card p-5">
+                    <h2 className="font-semibold text-gray-800 mb-1 text-sm">🎯 Match Quality</h2>
+                    <p className="text-xs text-gray-400 mb-3">Based on {stats.total_evaluations} evaluations</p>
+                    <div className="flex items-center gap-4">
+                      <PieChart width={100} height={100}>
+                        <Pie data={pieData} cx={45} cy={45} innerRadius={28} outerRadius={45} dataKey="value" stroke="none">
+                          {pieData.map((entry, i) => <Cell key={i} fill={entry.color} />)}
+                        </Pie>
+                      </PieChart>
+                      <div className="space-y-1.5 flex-1">
+                        {pieData.map(d => (
+                          <div key={d.name} className="flex items-center gap-2">
+                            <div className="w-2.5 h-2.5 rounded-full flex-shrink-0" style={{ backgroundColor: d.color }} />
+                            <span className="text-xs text-gray-600 flex-1">{d.name}</span>
+                            <span className="text-xs font-semibold text-gray-800">{d.value}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })()}
 
               {/* Tips */}
               <div className="card p-5 bg-gradient-to-br from-primary-50 to-white border-primary-100">

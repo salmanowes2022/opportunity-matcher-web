@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import { rateLimit } from 'express-rate-limit';
 
 import profileRoutes from './src/routes/profile.routes.js';
 import matchRoutes from './src/routes/match.routes.js';
@@ -12,6 +13,8 @@ import scraperRoutes from './src/routes/scraper.routes.js';
 import strategyRoutes from './src/routes/strategy.routes.js';
 import historyRoutes from './src/routes/history.routes.js';
 import dashboardRoutes from './src/routes/dashboard.routes.js';
+import interviewRoutes from './src/routes/interview.routes.js';
+import discoveryRoutes from './src/routes/discovery.routes.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 
 const app = express();
@@ -23,19 +26,41 @@ app.use(cors({
 }));
 app.use(express.json({ limit: '10mb' }));
 
+// General API rate limit: 200 req per 15 min per IP
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 200,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' }
+});
+
+// Strict AI rate limit: 30 AI calls per 15 min per IP
+const aiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'AI rate limit reached. Please wait a few minutes before making more AI requests.' }
+});
+
+app.use('/api', generalLimiter);
+
 // Health check (no auth required)
 app.get('/health', (_, res) => res.json({ status: 'ok', timestamp: new Date().toISOString() }));
 
 // All API routes
 app.use('/api/profile', profileRoutes);
-app.use('/api/match', matchRoutes);
-app.use('/api/materials', materialsRoutes);
-app.use('/api/documents', documentsRoutes);
+app.use('/api/match', aiLimiter, matchRoutes);
+app.use('/api/materials', aiLimiter, materialsRoutes);
+app.use('/api/documents', aiLimiter, documentsRoutes);
 app.use('/api/opportunities', opportunitiesRoutes);
-app.use('/api/scraper', scraperRoutes);
-app.use('/api/strategy', strategyRoutes);
+app.use('/api/scraper', aiLimiter, scraperRoutes);
+app.use('/api/strategy', aiLimiter, strategyRoutes);
 app.use('/api/history', historyRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/interview', aiLimiter, interviewRoutes);
+app.use('/api/discovery', aiLimiter, discoveryRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

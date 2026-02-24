@@ -87,3 +87,29 @@ export async function handleBatchEvaluate(req, res, next) {
     next(err);
   }
 }
+
+export async function handleExportPDF(req, res, next) {
+  try {
+    const { opportunity, match_result } = req.body;
+    if (!opportunity || !match_result) {
+      return res.status(400).json({ error: 'opportunity and match_result are required' });
+    }
+
+    const profile = await getProfile(req.userId);
+    if (!profile) {
+      return res.status(400).json({ error: 'Profile not found' });
+    }
+
+    const { generateEvaluationPDF } = await import('../services/pdf.service.js');
+    const pdfBuffer = generateEvaluationPDF(profile, opportunity, match_result);
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="match-report-${Date.now()}.pdf"`,
+      'Content-Length': pdfBuffer.byteLength,
+    });
+    res.send(Buffer.from(pdfBuffer));
+  } catch (err) {
+    next(err);
+  }
+}
