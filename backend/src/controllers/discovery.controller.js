@@ -11,11 +11,11 @@ export async function handleDiscovery(req, res, next) {
     }
 
     // Get top matches from history
-    const history = await getHistory(req.userId);
+    const { items: historyItems } = await getHistory(req.userId, { limit: 50 });
     const allOpps = await getAllOpportunities(req.userId);
     const oppMap = new Map(allOpps.map(o => [o.id, o]));
 
-    const topMatches = history
+    const topMatches = (historyItems || [])
       .filter(h => h.opportunity_id && oppMap.has(h.opportunity_id) && Number(h.compatibility_score) >= 0.5)
       .slice(0, 5)
       .map(h => oppMap.get(h.opportunity_id));
