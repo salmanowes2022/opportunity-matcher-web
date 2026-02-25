@@ -14,6 +14,7 @@ const navItems = [
   { to: '/documents',     icon: '📄', label: 'Documents' },
   { to: '/opportunities', icon: '🗄️', label: 'Opportunities', badge: 'deadlines' },
   { to: '/discovery',     icon: '🔍', label: 'Discovery' },
+  { to: '/smart-apply',   icon: '⚡', label: 'Smart Apply' },
   { to: '/interview',     icon: '🎤', label: 'Interview Prep' },
   { to: '/strategy',      icon: '🤖', label: 'AI Strategy' },
 ];

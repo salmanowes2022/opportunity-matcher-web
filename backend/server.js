@@ -15,6 +15,7 @@ import historyRoutes from './src/routes/history.routes.js';
 import dashboardRoutes from './src/routes/dashboard.routes.js';
 import interviewRoutes from './src/routes/interview.routes.js';
 import discoveryRoutes from './src/routes/discovery.routes.js';
+import smartApplyRoutes from './src/routes/smartApply.routes.js';
 import { errorHandler } from './src/middleware/errorHandler.js';
 
 const app = express();
@@ -61,6 +62,7 @@ app.use('/api/history', historyRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/interview', aiLimiter, interviewRoutes);
 app.use('/api/discovery', aiLimiter, discoveryRoutes);
+app.use('/api/smart-apply', aiLimiter, smartApplyRoutes);
 
 // Global error handler (must be last)
 app.use(errorHandler);

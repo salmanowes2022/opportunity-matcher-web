@@ -250,6 +250,7 @@ export default function OpportunitiesPage() {
                     <div className="flex flex-col gap-1.5 shrink-0">
                       <button onClick={() => navigate('/match', { state: { opp } })} className="btn-primary text-xs px-3 py-1.5">🎯 Match</button>
                       <div className="flex gap-1">
+                        <button title="Smart Apply" onClick={() => navigate('/smart-apply', { state: { opp } })} className="btn-secondary text-xs px-2 py-1">⚡</button>
                         <button title="Generate material" onClick={() => navigate('/materials', { state: { opp } })} className="btn-secondary text-xs px-2 py-1">✍️</button>
                         <button title="Interview prep" onClick={() => navigate('/interview', { state: { opp } })} className="btn-secondary text-xs px-2 py-1">🎤</button>
                         <button title="Edit" onClick={() => { setEditing(opp); setModal('edit'); }} className="btn-secondary text-xs px-2 py-1">✏️</button>

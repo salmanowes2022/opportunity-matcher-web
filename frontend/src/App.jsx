@@ -18,6 +18,7 @@ import OpportunitiesPage from './pages/OpportunitiesPage';
 import StrategyPage from './pages/StrategyPage';
 import InterviewPrepPage from './pages/InterviewPrepPage';
 import DiscoveryPage from './pages/DiscoveryPage';
+import SmartApplyPage from './pages/SmartApplyPage';
 import OnboardingPage from './pages/OnboardingPage';
 import NotFoundPage from './pages/NotFoundPage';
 
@@ -63,6 +64,7 @@ export default function App() {
           <Route path="/strategy"      element={<Protected><StrategyPage /></Protected>} />
           <Route path="/interview"     element={<Protected><InterviewPrepPage /></Protected>} />
           <Route path="/discovery"     element={<Protected><DiscoveryPage /></Protected>} />
+          <Route path="/smart-apply"   element={<Protected><SmartApplyPage /></Protected>} />
 
           {/* Redirects */}
           <Route path="/" element={<Navigate to="/dashboard" replace />} />

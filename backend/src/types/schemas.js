@@ -160,3 +160,30 @@ export const ApplicationStrategyResultSchema = z.object({
   effort_estimate_total_hours: z.number().int(),
   recommended_focus: z.array(z.string())
 });
+
+// =============================================
+// Smart Apply Schemas
+// =============================================
+
+export const ShortAnswerSchema = z.object({
+  question: z.string(),
+  answer: z.string(),
+  word_count: z.number().int()
+});
+
+export const DocumentChecklistItemSchema = z.object({
+  document: z.string(),
+  required: z.boolean(),
+  status: z.enum(['have_it', 'need_to_prepare', 'optional']),
+  notes: z.string()
+});
+
+export const SmartApplyPackageSchema = z.object({
+  cover_letter: z.string(),
+  personal_statement: z.string(),
+  short_answers: z.array(ShortAnswerSchema),
+  document_checklist: z.array(DocumentChecklistItemSchema),
+  submission_tips: z.array(z.string()),
+  tailoring_notes: z.string(),
+  estimated_prep_time: z.string()
+});
