@@ -4,7 +4,6 @@ export async function getAllOpportunities(userId) {
   const { data, error } = await supabase
     .from('opportunities')
     .select('*')
-    .eq('user_id', userId)
     .order('saved_at', { ascending: false });
 
   if (error) throw error;
@@ -16,7 +15,6 @@ export async function getOpportunityById(userId, id) {
     .from('opportunities')
     .select('*')
     .eq('id', id)
-    .eq('user_id', userId)
     .single();
 
   if (error) throw error;
@@ -75,7 +73,6 @@ export async function searchOpportunities(userId, query) {
   const { data, error } = await supabase
     .from('opportunities')
     .select('*')
-    .eq('user_id', userId)
     .or(`title.ilike.%${query}%,opp_type.ilike.%${query}%,description.ilike.%${query}%`);
 
   if (error) throw error;
