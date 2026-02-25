@@ -24,9 +24,9 @@ export async function handleRunStrategy(req, res, next) {
       const allOpps = await getAllOpportunities(req.userId);
       const filtered = allOpps.filter(o => opportunity_ids.includes(o.id));
       // Get match scores from history for these opportunities
-      const history = await getHistory(req.userId);
+      const { items: historyItems } = await getHistory(req.userId, { limit: 100 });
       opportunities = filtered.map(opp => {
-        const latestMatch = history.find(h => h.opportunity_id === opp.id);
+        const latestMatch = (historyItems || []).find(h => h.opportunity_id === opp.id);
         return {
           opportunity: opp,
           score: latestMatch ? Number(latestMatch.compatibility_score) : 0.5
@@ -34,8 +34,8 @@ export async function handleRunStrategy(req, res, next) {
       });
     } else {
       // Use top evaluated opportunities from history
-      const history = await getHistory(req.userId);
-      const topHistory = history.slice(0, 10);
+      const { items: historyItems } = await getHistory(req.userId, { limit: 10 });
+      const topHistory = historyItems || [];
 
       const allOpps = await getAllOpportunities(req.userId);
       const oppMap = new Map(allOpps.map(o => [o.id, o]));
