@@ -5,18 +5,26 @@ import {
   updateOpportunity,
   updateOpportunityStatus,
   deleteOpportunity,
-  searchOpportunities
+  searchOpportunities,
+  getUserStatuses
 } from '../services/opportunities.service.js';
 import { OpportunitySchema } from '../types/schemas.js';
 
 export async function handleGetAll(req, res, next) {
   try {
-    if (req.query.q) {
-      const opportunities = await searchOpportunities(req.userId, req.query.q);
-      return res.json({ opportunities });
-    }
-    const opportunities = await getAllOpportunities(req.userId);
-    res.json({ opportunities });
+    // Fetch all opportunities + this user's personal statuses in parallel
+    const [opportunities, statusMap] = await Promise.all([
+      req.query.q
+        ? searchOpportunities(req.userId, req.query.q)
+        : getAllOpportunities(req.userId),
+      getUserStatuses(req.userId)
+    ]);
+    // Merge user-specific status onto each opportunity
+    const merged = opportunities.map(o => ({
+      ...o,
+      status: statusMap[o.id] || 'saved'
+    }));
+    res.json({ opportunities: merged });
   } catch (err) {
     next(err);
   }

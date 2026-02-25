@@ -58,15 +58,24 @@ export async function deleteOpportunity(userId, id) {
 
 export async function updateOpportunityStatus(userId, id, status) {
   const { data, error } = await supabase
-    .from('opportunities')
-    .update({ status })
-    .eq('id', id)
-    .eq('user_id', userId)
+    .from('user_opportunity_status')
+    .upsert({ user_id: userId, opportunity_id: id, status, updated_at: new Date().toISOString() }, { onConflict: 'user_id,opportunity_id' })
     .select()
     .single();
 
   if (error) throw error;
-  return data;
+  return { id, status: data.status };
+}
+
+export async function getUserStatuses(userId) {
+  const { data, error } = await supabase
+    .from('user_opportunity_status')
+    .select('opportunity_id, status')
+    .eq('user_id', userId);
+
+  if (error) throw error;
+  // Return as a map { opportunity_id: status }
+  return Object.fromEntries((data || []).map(r => [r.opportunity_id, r.status]));
 }
 
 export async function searchOpportunities(userId, query) {
