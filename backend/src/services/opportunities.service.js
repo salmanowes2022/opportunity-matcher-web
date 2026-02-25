@@ -57,14 +57,15 @@ export async function deleteOpportunity(userId, id) {
 }
 
 export async function updateOpportunityStatus(userId, id, status) {
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from('user_opportunity_status')
-    .upsert({ user_id: userId, opportunity_id: id, status, updated_at: new Date().toISOString() }, { onConflict: 'user_id,opportunity_id' })
-    .select()
-    .single();
+    .upsert(
+      { user_id: userId, opportunity_id: id, status, updated_at: new Date().toISOString() },
+      { onConflict: 'user_id,opportunity_id' }
+    );
 
   if (error) throw error;
-  return { id, status: data.status };
+  return { id, status };
 }
 
 export async function getUserStatuses(userId) {
