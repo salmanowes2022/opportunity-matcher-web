@@ -75,12 +75,12 @@ function StepCV({ onNext, onSkip }) {
     try {
       // Step 1: analyze document
       const formData = new FormData();
-      formData.append('document', file);
-      formData.append('document_type', 'cv');
+      formData.append('image', file);
+      formData.append('document_type_hint', 'CV/Resume');
       const analysis = await analyzeDocument(formData);
 
       // Step 2: extract profile fields
-      const profileUpdates = await extractProfile({ analysis });
+      const profileUpdates = await extractProfile({ extracted_text: analysis?.extracted_text || '' });
 
       // Step 3: save profile
       if (profileUpdates && Object.keys(profileUpdates).length > 0) {

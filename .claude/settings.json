@@ -1,0 +1,22 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(USER_ID=\"405fe9cc-8cae-4813-9be6-3b0582f9433c\")",
+      "Bash(SERVICE_KEY=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im90d2p3cXluZGlwaWpqZW1xeWZ0Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTg2MjgzNSwiZXhwIjoyMDg3NDM4ODM1fQ.tU89sp4xRO_MEFOag5Tf1NASe72PQItdd9PbdVM4l20\")",
+      "Bash(__NEW_LINE_ab5c0a2adeb5778d__ python3:*)",
+      "Bash(__NEW_LINE_2a2d978bc96a6bbb__ curl:*)",
+      "Bash(echo:*)",
+      "Bash(npm install:*)",
+      "Bash(/usr/local/bin/npm install express-rate-limit)",
+      "Bash(npx:*)",
+      "Read(//usr/local/lib/node_modules/**)",
+      "Bash(~/.nvm/versions/node/v18.20.5/bin/npm --version)",
+      "Bash(/Users/salmanawaisa/opportunity-matcher-web/backend/src/services/history.service.js:*)",
+      "Bash(/Users/salmanawaisa/opportunity-matcher-web/backend/src/controllers/history.controller.js:*)",
+      "Bash(/Users/salmanawaisa/opportunity-matcher-web/backend/src/services/dashboard.service.js:*)"
+    ],
+    "additionalDirectories": [
+      "/tmp"
+    ]
+  }
+}
