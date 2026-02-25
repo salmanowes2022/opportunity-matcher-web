@@ -20,6 +20,9 @@ import { errorHandler } from './src/middleware/errorHandler.js';
 
 const app = express();
 
+// Trust Render's proxy so express-rate-limit reads the real client IP
+app.set('trust proxy', 1);
+
 app.use(helmet());
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
