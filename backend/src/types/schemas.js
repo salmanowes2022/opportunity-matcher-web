@@ -12,8 +12,8 @@ export const UserProfileSchema = z.object({
   skills: z.string().min(1),
   experience_years: z.number().int().min(0),
   languages: z.string().min(1),
-  achievements: z.string().min(1),
-  goals: z.string().min(1)
+  achievements: z.string().nullable().optional().transform(v => v ?? ''),
+  goals: z.string().nullable().optional().transform(v => v ?? '')
 });
 
 export const OpportunitySchema = z.object({

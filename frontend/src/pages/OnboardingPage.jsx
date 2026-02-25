@@ -82,9 +82,17 @@ function StepCV({ onNext, onSkip }) {
       // Step 2: extract profile fields
       const profileUpdates = await extractProfile({ extracted_text: analysis?.extracted_text || '' });
 
-      // Step 3: save profile
-      if (profileUpdates && Object.keys(profileUpdates).length > 0) {
-        await saveProfile(profileUpdates);
+      // Step 3: save profile — replace any null/undefined with safe defaults
+      const safeProfile = profileUpdates ? {
+        ...profileUpdates,
+        achievements: profileUpdates.achievements ?? '',
+        goals: profileUpdates.goals ?? '',
+        skills: profileUpdates.skills ?? '',
+        languages: profileUpdates.languages ?? 'English',
+        experience_years: profileUpdates.experience_years ?? 0,
+      } : {};
+      if (safeProfile && Object.keys(safeProfile).length > 0) {
+        await saveProfile(safeProfile);
         setExtracted(true);
         setTimeout(() => onNext(), 1500);
       } else {
