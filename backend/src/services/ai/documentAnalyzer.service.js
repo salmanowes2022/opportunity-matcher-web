@@ -1,5 +1,5 @@
 import openai from '../../config/openai.js';
-import { getGeminiModel } from '../../config/gemini.js';
+import { generateWithRotation } from '../../config/gemini.js';
 import { DocumentAnalysisSchema } from '../../types/schemas.js';
 
 const ANALYSIS_PROMPT = `You are an expert document analyzer specializing in academic and professional documents.
@@ -31,18 +31,19 @@ Return ONLY a valid JSON object with these exact fields:
 }`;
 
 async function analyzeWithGemini(fileBuffer, mimeType, documentTypeHint) {
-  const model = getGeminiModel('gemini-2.5-flash');
   const base64Data = fileBuffer.toString('base64');
 
-  const result = await model.generateContent([
-    {
-      inlineData: {
-        mimeType,
-        data: base64Data,
+  const result = await generateWithRotation('gemini-2.5-flash', (model) =>
+    model.generateContent([
+      {
+        inlineData: {
+          mimeType,
+          data: base64Data,
+        },
       },
-    },
-    `${ANALYSIS_PROMPT}\n\nDocument type hint: ${documentTypeHint || 'Unknown - please identify'}\n\nReturn ONLY the JSON object.`,
-  ]);
+      `${ANALYSIS_PROMPT}\n\nDocument type hint: ${documentTypeHint || 'Unknown - please identify'}\n\nReturn ONLY the JSON object.`,
+    ])
+  );
 
   const text = result.response.text().trim();
   // Strip markdown code fences if present

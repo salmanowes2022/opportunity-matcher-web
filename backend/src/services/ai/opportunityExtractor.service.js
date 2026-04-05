@@ -1,8 +1,6 @@
-import { getGeminiModel } from '../../config/gemini.js';
+import { generateWithRotation } from '../../config/gemini.js';
 
 export async function extractOpportunityFromImage(imageBuffer, mimeType = 'image/jpeg') {
-  const model = getGeminiModel('gemini-2.0-flash');
-
   const prompt = `You are analyzing an image that contains information about a scholarship, job posting, academic program, fellowship, or other opportunity.
 
 Your task: Extract key information and return it as a JSON object.
@@ -44,7 +42,9 @@ Rules:
     }
   };
 
-  const result = await model.generateContent([prompt, imagePart]);
+  const result = await generateWithRotation('gemini-2.0-flash', (model) =>
+    model.generateContent([prompt, imagePart])
+  );
   let text = result.response.text().trim();
 
   // Clean markdown code blocks if present (mirrors Python version)
