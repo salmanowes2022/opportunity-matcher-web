@@ -1,8 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const keys = process.env.GOOGLE_API_KEYS
-  ? JSON.parse(process.env.GOOGLE_API_KEYS)
-  : [process.env.GEMINI_API_KEY];
+const rawKeys = process.env.GOOGLE_API_KEYS || process.env.GEMINI_API_KEY;
+const keys = rawKeys?.startsWith('[')
+  ? JSON.parse(rawKeys)
+  : [rawKeys];
 
 let currentIndex = 0;
 
