@@ -13,7 +13,10 @@ export async function getProfile(userId) {
 }
 
 export async function upsertProfile(userId, profileData) {
-  const payload = { ...profileData, user_id: userId };
+  const skills = typeof profileData.skills === 'string'
+    ? profileData.skills.split(',').map(s => s.trim()).filter(Boolean)
+    : profileData.skills;
+  const payload = { ...profileData, skills, id: userId, user_id: userId };
 
   const { data, error } = await supabase
     .from('profiles')

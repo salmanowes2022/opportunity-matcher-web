@@ -58,7 +58,7 @@ export default function ProfilePage() {
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Skills</h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.skills.split(',').map((s, i) => (
+                    {(Array.isArray(profile.skills) ? profile.skills : profile.skills.split(',')).map((s, i) => (
                       <span key={i} className="px-2 py-1 bg-primary-50 text-primary-700 rounded text-xs font-medium">{s.trim()}</span>
                     ))}
                   </div>
@@ -66,7 +66,7 @@ export default function ProfilePage() {
                 <div>
                   <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-2">Languages</h3>
                   <div className="flex flex-wrap gap-2">
-                    {profile.languages.split(',').map((l, i) => (
+                    {(Array.isArray(profile.languages) ? profile.languages : profile.languages.split(',')).map((l, i) => (
                       <span key={i} className="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-medium">{l.trim()}</span>
                     ))}
                   </div>
