@@ -67,7 +67,7 @@ export default function MaterialsPage() {
 
   return (
     <div>
-      <PageWrapper title="Generate Materials" subtitle="AI-powered cover letters, personal statements, and motivation letters">
+      <PageWrapper title="Application Materials" subtitle="Prepare mentor-informed cover letters, personal statements, and motivation letters for aligned opportunities.">
         <div className="flex gap-2 mb-6">
           <button onClick={() => setTab('generate')} className={tab === 'generate' ? 'btn-primary' : 'btn-secondary'}>✍️ Generate</button>
           <button onClick={() => setTab('saved')} className={tab === 'saved' ? 'btn-primary' : 'btn-secondary'}>📁 Saved Materials</button>
@@ -89,7 +89,7 @@ export default function MaterialsPage() {
               </div>
               <form onSubmit={handleGenerate} className="space-y-4">
                 <div>
-                  <label className="label">Opportunity Title *</label>
+                  <label className="label">Mentor-Guided Opportunity Title *</label>
                   <input value={opp.title} onChange={e => setOpp(o => ({ ...o, title: e.target.value }))} className="input-field" required />
                 </div>
                 <div>
@@ -117,7 +117,7 @@ export default function MaterialsPage() {
             </div>
 
             <div>
-              {loading && <LoadingSpinner text="AI is writing your material..." />}
+              {loading && <LoadingSpinner text="AI is writing material aligned with your profile and goals..." />}
               {generated && !loading && (
                 <div className="card p-6 space-y-4">
                   <div className="flex items-center justify-between">
@@ -149,7 +149,7 @@ export default function MaterialsPage() {
 
         {tab === 'saved' && (
           listLoading ? <LoadingSpinner /> :
-          saved.length === 0 ? <EmptyState icon="📁" title="No saved materials" description="Generate your first material above" /> :
+          saved.length === 0 ? <EmptyState icon="📁" title="No saved materials" description="Generate your first application material for an aligned opportunity." /> :
           <div className="space-y-3">
             {saved.map(mat => (
               <div key={mat.id} className="card p-4 flex items-center justify-between">

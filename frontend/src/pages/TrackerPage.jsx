@@ -85,7 +85,7 @@ function OppCard({ opp, onStatusChange, loading }) {
         <button
           onClick={() => navigate('/match', { state: { opp } })}
           className="text-[10px] px-2 py-1 rounded-lg border border-gray-200 text-gray-500 hover:border-primary-300 hover:text-primary-600 transition-colors ml-auto"
-        >Check Match</button>
+        >Check Fit</button>
       </div>
     </div>
   );
@@ -136,8 +136,8 @@ export default function TrackerPage() {
   return (
     <div>
       <PageWrapper
-        title="Application Tracker"
-        subtitle="Track your application progress from saved to accepted"
+        title="Goal & Application Tracker"
+        subtitle="Track mentor-guided opportunities, application progress, and development milestones."
       >
         {/* Summary row */}
         {total > 0 && (
@@ -169,8 +169,8 @@ export default function TrackerPage() {
         {total === 0 ? (
           <div className="card p-12 text-center">
             <div className="text-5xl mb-4">📋</div>
-            <p className="font-semibold text-gray-700 mb-1">No opportunities to track yet</p>
-            <p className="text-sm text-gray-400 mb-4">Save opportunities from the Opportunities page or via Check Match</p>
+            <p className="font-semibold text-gray-700 mb-1">No mentor-guided opportunities to track yet</p>
+            <p className="text-sm text-gray-400 mb-4">Save opportunities from Discovery or check fit for an item from your mentor plan.</p>
           </div>
         ) : (
           <div className="grid grid-cols-5 gap-3 overflow-x-auto">

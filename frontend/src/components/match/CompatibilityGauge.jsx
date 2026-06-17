@@ -16,7 +16,7 @@ export default function CompatibilityGauge({ score }) {
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className={`text-2xl font-bold ${colors.text}`}>{formatScore(score)}</span>
-          <span className="text-xs text-gray-500">match</span>
+          <span className="text-xs text-gray-500">fit</span>
         </div>
       </div>
       <span className={`mt-2 text-sm font-semibold ${colors.text}`}>{colors.label}</span>

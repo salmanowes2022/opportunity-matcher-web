@@ -7,8 +7,9 @@ import { getOpportunities } from '../../api/opportunities.api';
 const navItems = [
   { to: '/dashboard',     icon: '🏠', label: 'Dashboard' },
   { to: '/profile',       icon: '👤', label: 'My Profile' },
-  { to: '/match',         icon: '🎯', label: 'Check Match' },
-  { to: '/tracker',       icon: '📋', label: 'Tracker' },
+  { to: '/strategy',      icon: '🤝', label: 'Mentor Strategy' },
+  { to: '/tracker',       icon: '📋', label: 'Goal Tracker' },
+  { to: '/match',         icon: '🎯', label: 'Opportunity Fit' },
   { to: '/history',       icon: '📊', label: 'History' },
   { to: '/materials',     icon: '✍️', label: 'Materials' },
   { to: '/documents',     icon: '📄', label: 'Documents' },
@@ -16,7 +17,6 @@ const navItems = [
   { to: '/discovery',     icon: '🔍', label: 'Discovery' },
   { to: '/smart-apply',   icon: '⚡', label: 'Smart Apply' },
   { to: '/interview',     icon: '🎤', label: 'Interview Prep' },
-  { to: '/strategy',      icon: '🤖', label: 'AI Strategy' },
 ];
 
 function ProfileMeter({ profile }) {
@@ -50,10 +50,10 @@ function SidebarContent({ user, profile, urgentCount, onSignOut, onNavClick }) {
       {/* Logo */}
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center text-white text-lg shadow-sm">🎯</div>
+          <div className="w-9 h-9 rounded-xl bg-primary-600 flex items-center justify-center text-white text-lg shadow-sm">🤝</div>
           <div>
-            <h1 className="font-bold text-gray-900 text-sm leading-tight">Opportunity</h1>
-            <h1 className="font-bold text-primary-600 text-sm leading-tight">Matcher</h1>
+            <h1 className="font-bold text-gray-900 text-sm leading-tight">Mentor</h1>
+            <h1 className="font-bold text-primary-600 text-sm leading-tight">Match</h1>
           </div>
         </div>
       </div>

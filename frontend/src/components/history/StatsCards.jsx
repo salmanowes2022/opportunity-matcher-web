@@ -4,9 +4,9 @@ import { formatScore } from '../../utils/scoreHelpers';
 export default function StatsCards({ stats }) {
   if (!stats) return null;
   const items = [
-    { label: 'Total Evaluations', value: stats.total },
+    { label: 'Total Fit Checks', value: stats.total },
     { label: 'Average Score', value: formatScore(stats.avg_score) },
-    { label: 'Best Match', value: formatScore(stats.best_match) },
+    { label: 'Best Opportunity Fit', value: formatScore(stats.best_match) },
     { label: 'Materials Generated', value: stats.materials_generated },
   ];
   return (

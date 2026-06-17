@@ -272,7 +272,7 @@ export default function SmartApplyPage() {
     <div>
       <PageWrapper
         title="Smart Apply"
-        subtitle="One-click full application package powered by AI"
+        subtitle="Create a mentor-informed application package for opportunities aligned with your growth plan."
         action={
           <div className="flex gap-2">
             <Tab label="Generate" active={view === 'generate'} onClick={() => setView('generate')} />
@@ -299,7 +299,7 @@ export default function SmartApplyPage() {
 
             {/* Opportunity selector */}
             <div className="card p-5">
-              <h3 className="font-semibold text-gray-900 mb-3">Select Opportunity</h3>
+              <h3 className="font-semibold text-gray-900 mb-3">Select a Mentor-Guided Opportunity</h3>
               {opps.length === 0 ? (
                 <div className="text-center py-6">
                   <p className="text-sm text-gray-500 mb-3">No saved opportunities yet.</p>
@@ -360,11 +360,11 @@ export default function SmartApplyPage() {
                       Generating your package… (15–30s)
                     </>
                   ) : (
-                    <>⚡ Generate Full Application Package</>
+                    <>⚡ Generate Mentor-Informed Package</>
                   )}
                 </button>
                 {generating && (
-                  <p className="text-xs text-center text-gray-400 mt-2">AI is crafting your personalized materials — please wait</p>
+                  <p className="text-xs text-center text-gray-400 mt-2">AI is crafting materials aligned with your profile and goals — please wait</p>
                 )}
               </div>
             )}
@@ -379,7 +379,7 @@ export default function SmartApplyPage() {
               <div className="text-center py-16">
                 <p className="text-4xl mb-3">⚡</p>
                 <p className="font-semibold text-gray-700">No packages yet</p>
-                <p className="text-sm text-gray-400 mt-1 mb-4">Generate your first Smart Apply package above</p>
+                <p className="text-sm text-gray-400 mt-1 mb-4">Generate your first mentor-informed package above</p>
                 <button onClick={() => setView('generate')} className="btn-primary text-sm">Generate Package</button>
               </div>
             ) : (

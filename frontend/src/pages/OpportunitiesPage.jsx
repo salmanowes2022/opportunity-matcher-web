@@ -134,7 +134,7 @@ export default function OpportunitiesPage() {
       results.forEach(r => { map[r.opportunity_id] = r.compatibility_score; });
       setScores(map);
       setSortBy('score');
-      showToast(`Scored ${results.length} opportunities!`);
+      showToast(`Checked fit for ${results.length} opportunities!`);
     } catch (err) {
       showToast(err.response?.data?.error || 'Scoring failed — make sure your profile is complete', 'error');
     } finally { setScoring(false); }
@@ -175,12 +175,12 @@ export default function OpportunitiesPage() {
   return (
     <div>
       <PageWrapper
-        title="Opportunities"
-        subtitle="Manage and auto-score all your saved opportunities"
+        title="Opportunity Discovery"
+        subtitle="Manage opportunities that complement your mentorship plan and long-term goals."
         action={
           <div className="flex gap-2 flex-wrap justify-end">
             <button onClick={handleAutoScore} disabled={scoring || opps.length === 0} className="btn-secondary flex items-center gap-1.5 text-sm">
-              {scoring ? <><svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>Scoring…</> : `🎯 Auto-Score All${scoredCount ? ` (${scoredCount}/${opps.length})` : ''}`}
+              {scoring ? <><svg className="animate-spin w-3.5 h-3.5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>Checking…</> : `🎯 Check Fit All${scoredCount ? ` (${scoredCount}/${opps.length})` : ''}`}
             </button>
             <button onClick={() => setModal('scrape')} className="btn-secondary text-sm">🌐 Import URL</button>
             <button onClick={() => { setEditing(null); setModal('add'); }} className="btn-primary text-sm">+ Add</button>
@@ -208,13 +208,13 @@ export default function OpportunitiesPage() {
         {scoring && (
           <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-xl flex items-center gap-2 text-sm text-blue-700">
             <svg className="animate-spin w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/></svg>
-            AI is scoring all {opps.length} opportunities against your profile… this may take 20–30 seconds
+            AI is checking all {opps.length} opportunities against your mentorship profile… this may take 20–30 seconds
           </div>
         )}
 
         {loading ? <LoadingSpinner text="Loading…" /> : displayed.length === 0 ? (
           <EmptyState icon="🗄️" title="No opportunities found"
-            description={opps.length === 0 ? "Add your first opportunity to get started" : "No results match your filter"}
+            description={opps.length === 0 ? "Add opportunities that support your mentor-guided plan." : "No results match your filter"}
             action={opps.length === 0 && (
               <div className="flex gap-2 justify-center">
                 <button onClick={() => setModal('scrape')} className="btn-secondary px-5">Import from URL</button>
@@ -248,7 +248,7 @@ export default function OpportunitiesPage() {
                       <p className="text-sm text-gray-500 line-clamp-2">{opp.description}</p>
                     </div>
                     <div className="flex flex-col gap-1.5 shrink-0">
-                      <button onClick={() => navigate('/match', { state: { opp } })} className="btn-primary text-xs px-3 py-1.5">🎯 Match</button>
+                      <button onClick={() => navigate('/match', { state: { opp } })} className="btn-primary text-xs px-3 py-1.5">🎯 Fit</button>
                       <div className="flex gap-1">
                         <button title="Smart Apply" onClick={() => navigate('/smart-apply', { state: { opp } })} className="btn-secondary text-xs px-2 py-1">⚡</button>
                         <button title="Generate material" onClick={() => navigate('/materials', { state: { opp } })} className="btn-secondary text-xs px-2 py-1">✍️</button>

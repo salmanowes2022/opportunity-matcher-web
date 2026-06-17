@@ -5,6 +5,7 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import Sidebar from './components/layout/Sidebar';
 import ErrorBoundary from './components/ErrorBoundary';
 
+import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignupPage';
 import DashboardPage from './pages/DashboardPage';
@@ -48,6 +49,7 @@ export default function App() {
       <AuthProvider>
         <Routes>
           {/* Public */}
+          <Route path="/"           element={<LandingPage />} />
           <Route path="/login"      element={<LoginPage />} />
           <Route path="/signup"     element={<SignupPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
@@ -67,7 +69,6 @@ export default function App() {
           <Route path="/smart-apply"   element={<Protected><SmartApplyPage /></Protected>} />
 
           {/* Redirects */}
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AuthProvider>

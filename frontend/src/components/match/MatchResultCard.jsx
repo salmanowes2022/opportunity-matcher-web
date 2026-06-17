@@ -79,7 +79,7 @@ export default function MatchResultCard({ result, opportunityTitle, opportunity 
         <div className="flex items-start gap-5">
           <CompatibilityGauge score={result.compatibility_score} />
           <div className="flex-1 min-w-0 pt-2">
-            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-0.5">Match Result</p>
+            <p className="text-xs text-gray-400 font-medium uppercase tracking-wider mb-0.5">Opportunity Fit Result</p>
             <h3 className="text-base font-bold text-gray-900 leading-snug mb-2">{opportunityTitle}</h3>
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text}`}>
@@ -137,7 +137,7 @@ export default function MatchResultCard({ result, opportunityTitle, opportunity 
 
         {tab === 'Strengths' && (
           <div>
-            <p className="text-xs text-gray-400 mb-3">What makes you a strong candidate</p>
+            <p className="text-xs text-gray-400 mb-3">What makes you a strong candidate for this mentor-guided opportunity</p>
             <ul className="space-y-2">
               {(strengthBullets.length > 0 ? strengthBullets : [result.strengths]).map((s, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
@@ -150,7 +150,7 @@ export default function MatchResultCard({ result, opportunityTitle, opportunity 
 
         {tab === 'Gaps' && (
           <div>
-            <p className="text-xs text-gray-400 mb-3">Areas to work on before applying</p>
+            <p className="text-xs text-gray-400 mb-3">Areas to discuss with a mentor before applying</p>
             <ul className="space-y-2">
               {(gapBullets.length > 0 ? gapBullets : [result.gaps]).map((g, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
@@ -183,7 +183,7 @@ export default function MatchResultCard({ result, opportunityTitle, opportunity 
                 onClick={() => navigate('/strategy')}
                 className="btn-secondary text-xs px-4 py-2 flex-1"
               >
-                🤖 Run Strategy
+                🤝 Run Mentor Strategy
               </button>
             </div>
           </div>

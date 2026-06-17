@@ -31,7 +31,7 @@ export default function OpportunityCard({ opp, onEdit, onDelete, deleting }) {
             onClick={() => navigate('/match', { state: { opp } })}
             className="btn-primary text-xs px-3 py-1.5"
           >
-            🎯 Match
+            🎯 Fit
           </button>
           {onEdit && (
             <button onClick={() => onEdit(opp)} className="btn-secondary text-xs px-3 py-1.5">Edit</button>

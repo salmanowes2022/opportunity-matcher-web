@@ -123,11 +123,11 @@ export default function DashboardPage() {
           {!loading && !profile && (
             <div className="mb-6 p-4 bg-primary-50 border border-primary-200 rounded-2xl flex items-center justify-between gap-4 flex-wrap">
               <div>
-                <p className="font-semibold text-primary-800">👋 Welcome! Get started in 3 easy steps</p>
-                <p className="text-sm text-primary-600 mt-0.5">Upload your CV to auto-fill your profile and start matching opportunities</p>
+                <p className="font-semibold text-primary-800">👋 Welcome! Start your mentorship journey in 3 steps</p>
+                <p className="text-sm text-primary-600 mt-0.5">Build your profile so we can guide mentor matching, goals, and relevant opportunities.</p>
               </div>
               <button onClick={() => navigate('/onboarding')} className="btn-primary text-sm px-5 flex-shrink-0">
-                Start Setup →
+                Start Mentorship Setup →
               </button>
             </div>
           )}
@@ -135,22 +135,39 @@ export default function DashboardPage() {
           {/* Greeting */}
           <div className="mb-8">
             <h1 className="text-2xl font-bold text-gray-900">{greeting}, {firstName} 👋</h1>
-            <p className="text-gray-500 mt-1 text-sm">Here's your opportunity overview for today</p>
+            <p className="text-gray-500 mt-1 text-sm">Here is your mentorship, development, and opportunity ecosystem for today.</p>
+          </div>
+
+          {/* Mentorship journey */}
+          <div className="grid md:grid-cols-3 gap-4 mb-8">
+            {[
+              { icon: '🤝', title: 'Mentor Matching', desc: 'Use your profile and goals to identify the mentor guidance you need next.', action: 'Refine profile', path: '/profile' },
+              { icon: '📋', title: 'Mentorship Management', desc: 'Track conversations, commitments, and application milestones in one place.', action: 'Open tracker', path: '/tracker' },
+              { icon: '📈', title: 'Goal Development', desc: 'Turn mentor advice into a practical strategy for growth and next steps.', action: 'Run strategy', path: '/strategy' },
+            ].map(({ icon, title, desc, action, path }) => (
+              <button key={title} onClick={() => navigate(path)}
+                className="card p-5 text-left hover:border-primary-300 hover:bg-primary-50 transition-colors">
+                <div className="text-3xl mb-3">{icon}</div>
+                <h2 className="font-semibold text-gray-900 mb-1">{title}</h2>
+                <p className="text-sm text-gray-500 mb-4">{desc}</p>
+                <span className="text-xs font-semibold text-primary-700">{action} →</span>
+              </button>
+            ))}
           </div>
 
           {/* Stat cards */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <StatCard
-              icon="🗄️" label="Opportunities" value={stats?.total_opportunities ?? 0}
+              icon="🗄️" label="Saved Opportunities" value={stats?.total_opportunities ?? 0}
               color="primary" onClick={() => navigate('/opportunities')}
             />
             <StatCard
-              icon="🎯" label="Evaluations" value={stats?.total_evaluations ?? 0}
+              icon="🎯" label="Fit Checks" value={stats?.total_evaluations ?? 0}
               sub={stats?.avg_score ? `Avg score: ${stats.avg_score}%` : undefined}
               color="purple" onClick={() => navigate('/history')}
             />
             <StatCard
-              icon="⭐" label="Best Match" value={stats?.best_score ? `${stats.best_score}%` : '—'}
+              icon="⭐" label="Best Opportunity Fit" value={stats?.best_score ? `${stats.best_score}%` : '—'}
               color="green" onClick={() => navigate('/history')}
             />
             <StatCard
@@ -167,13 +184,13 @@ export default function DashboardPage() {
               {/* Upcoming deadlines */}
               <div className="card p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold text-gray-800">⏰ Upcoming Deadlines</h2>
+                  <h2 className="font-semibold text-gray-800">⏰ Opportunity Deadlines</h2>
                   <button onClick={() => navigate('/opportunities')} className="text-xs text-primary-600 hover:underline">View all</button>
                 </div>
                 {upcomingDeadlines.length === 0 ? (
                   <div className="text-center py-6">
-                    <p className="text-gray-400 text-sm">No upcoming deadlines in the next 30 days</p>
-                    <button onClick={() => navigate('/opportunities')} className="text-xs text-primary-600 hover:underline mt-2">Add opportunities →</button>
+                    <p className="text-gray-400 text-sm">No opportunity deadlines in the next 30 days</p>
+                    <button onClick={() => navigate('/opportunities')} className="text-xs text-primary-600 hover:underline mt-2">Add opportunities from your mentor plan →</button>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -200,7 +217,7 @@ export default function DashboardPage() {
               {/* Application pipeline */}
               <div className="card p-5">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold text-gray-800">📋 Application Pipeline</h2>
+                  <h2 className="font-semibold text-gray-800">📋 Goal & Application Pipeline</h2>
                   <button onClick={() => navigate('/tracker')} className="text-xs text-primary-600 hover:underline">Open tracker →</button>
                 </div>
                 <div className="grid grid-cols-5 gap-2">
@@ -218,10 +235,10 @@ export default function DashboardPage() {
                 <h2 className="font-semibold text-gray-800 mb-4">⚡ Quick Actions</h2>
                 <div className="grid grid-cols-2 gap-3">
                   {[
-                    { icon: '🎯', label: 'Check Match', desc: 'Evaluate a new opportunity', path: '/match' },
-                    { icon: '📄', label: 'Upload CV', desc: 'Extract profile from document', path: '/documents' },
-                    { icon: '🤖', label: 'Run Strategy', desc: 'Get AI recommendations', path: '/strategy' },
-                    { icon: '✍️', label: 'Generate Materials', desc: 'Cover letter or SOP', path: '/materials' },
+                    { icon: '🤝', label: 'Mentor Strategy', desc: 'Plan guidance priorities', path: '/strategy' },
+                    { icon: '📄', label: 'Upload CV', desc: 'Build your profile', path: '/documents' },
+                    { icon: '🎯', label: 'Opportunity Fit', desc: 'Evaluate a recommended opportunity', path: '/match' },
+                    { icon: '✍️', label: 'Generate Materials', desc: 'Prepare applications', path: '/materials' },
                   ].map(({ icon, label, desc, path }) => (
                     <button key={path} onClick={() => navigate(path)}
                       className="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-primary-300 hover:bg-primary-50 transition-all text-left group">
@@ -263,7 +280,7 @@ export default function DashboardPage() {
 
               {/* Profile card */}
               <div className="card p-5">
-                <h2 className="font-semibold text-gray-800 mb-4">👤 Your Profile</h2>
+                <h2 className="font-semibold text-gray-800 mb-4">👤 Mentorship Profile</h2>
                 {profile ? (
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
@@ -276,17 +293,17 @@ export default function DashboardPage() {
                       </div>
                     </div>
                     <ProfileCompleteness profile={profile} />
-                    <button onClick={() => navigate('/profile')} className="w-full btn-secondary text-xs py-2">Edit Profile</button>
+                    <button onClick={() => navigate('/profile')} className="w-full btn-secondary text-xs py-2">Edit Mentorship Profile</button>
                   </div>
                 ) : (
                   <div className="text-center py-4">
-                    <p className="text-sm text-gray-400 mb-3">No profile yet — create one to get better matches</p>
+                    <p className="text-sm text-gray-400 mb-3">No profile yet. Create one to guide mentor matching and recommendations.</p>
                     <button onClick={() => navigate('/profile')} className="btn-primary text-xs px-4 py-2">Create Profile</button>
                   </div>
                 )}
               </div>
 
-              {/* Match Score Distribution */}
+              {/* Fit score distribution */}
               {stats?.score_distribution && stats.total_evaluations > 0 && (() => {
                 const dist = stats.score_distribution;
                 const pieData = [
@@ -297,8 +314,8 @@ export default function DashboardPage() {
                 if (!pieData.length) return null;
                 return (
                   <div className="card p-5">
-                    <h2 className="font-semibold text-gray-800 mb-1 text-sm">🎯 Match Quality</h2>
-                    <p className="text-xs text-gray-400 mb-3">Based on {stats.total_evaluations} evaluations</p>
+                    <h2 className="font-semibold text-gray-800 mb-1 text-sm">🎯 Opportunity Fit Quality</h2>
+                    <p className="text-xs text-gray-400 mb-3">Based on {stats.total_evaluations} fit checks</p>
                     <div className="flex items-center gap-4">
                       <PieChart width={100} height={100}>
                         <Pie data={pieData} cx={45} cy={45} innerRadius={28} outerRadius={45} dataKey="value" stroke="none">
@@ -321,14 +338,14 @@ export default function DashboardPage() {
 
               {/* Tips */}
               <div className="card p-5 bg-gradient-to-br from-primary-50 to-white border-primary-100">
-                <h2 className="font-semibold text-primary-800 mb-3">💡 Tips to improve</h2>
+                <h2 className="font-semibold text-primary-800 mb-3">💡 Mentorship next steps</h2>
                 <ul className="space-y-2.5 text-xs text-primary-700">
                   {[
-                    !profile && 'Create your profile for accurate matches',
-                    profile && (profile.gpa == null) && 'Add your GPA to boost match scores',
-                    (stats?.total_evaluations ?? 0) === 0 && 'Evaluate your first opportunity in Check Match',
-                    upcomingDeadlines.length === 0 && 'Save opportunities with deadlines to track them',
-                    (stats?.total_materials ?? 0) === 0 && 'Generate a cover letter for your best match',
+                    !profile && 'Create your profile so mentor guidance can be personalized',
+                    profile && (profile.gpa == null) && 'Add academic details to strengthen mentor and opportunity recommendations',
+                    (stats?.total_evaluations ?? 0) === 0 && 'Check the fit of your first mentor-recommended opportunity',
+                    upcomingDeadlines.length === 0 && 'Save opportunities from your development plan to track deadlines',
+                    (stats?.total_materials ?? 0) === 0 && 'Generate materials for the opportunity your mentor recommends next',
                   ].filter(Boolean).slice(0, 4).map((tip, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <span className="text-primary-400 mt-0.5">→</span>{tip}
@@ -336,7 +353,7 @@ export default function DashboardPage() {
                   ))}
                   {!profile && !((stats?.total_evaluations ?? 0) === 0) && !((stats?.total_materials ?? 0) === 0) && (
                     <li className="flex items-start gap-2">
-                      <span className="text-primary-400 mt-0.5">→</span>Run AI Strategy for a full analysis
+                      <span className="text-primary-400 mt-0.5">→</span>Run Mentor Strategy for a full development plan
                     </li>
                   )}
                 </ul>

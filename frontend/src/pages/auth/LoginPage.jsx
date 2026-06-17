@@ -26,9 +26,9 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🎯</div>
-          <h1 className="text-2xl font-bold text-gray-900">Opportunity Matcher</h1>
-          <p className="text-gray-500 text-sm mt-2">Sign in to your account</p>
+          <div className="text-5xl mb-3">🤝</div>
+          <h1 className="text-2xl font-bold text-gray-900">Mentor Match</h1>
+          <p className="text-gray-500 text-sm mt-2">Sign in to continue your mentorship journey</p>
         </div>
 
         <form onSubmit={handleLogin} className="space-y-4">

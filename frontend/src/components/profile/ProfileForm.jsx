@@ -84,8 +84,8 @@ export default function ProfileForm({ initialData = null, onSaved }) {
         <textarea name="achievements" value={form.achievements} onChange={handleChange} className="input-field" rows={3} required placeholder="Awards, publications, certifications, notable projects..." />
       </div>
       <div>
-        <label className="label">Your Goals *</label>
-        <textarea name="goals" value={form.goals} onChange={handleChange} className="input-field" rows={3} required placeholder="What are you looking for? Career change, PhD, research opportunities..." />
+        <label className="label">Mentorship & Growth Goals *</label>
+        <textarea name="goals" value={form.goals} onChange={handleChange} className="input-field" rows={3} required placeholder="What guidance do you need? Career direction, PhD planning, research experience, networking, leadership growth..." />
       </div>
 
       <button type="submit" disabled={loading} className="btn-primary w-full py-3">

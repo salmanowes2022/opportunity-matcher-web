@@ -132,7 +132,7 @@ export default function DocumentsPage() {
 
   return (
     <div>
-      <PageWrapper title="Upload Documents" subtitle="Upload CVs, transcripts, or certificates to extract your profile automatically">
+      <PageWrapper title="Upload Documents" subtitle="Upload CVs, transcripts, or certificates to build a mentorship profile automatically.">
         <div className="grid lg:grid-cols-5 gap-6 items-start">
 
           {/* ── Left panel ── */}
@@ -203,7 +203,7 @@ export default function DocumentsPage() {
               <div className="card p-12 flex flex-col items-center justify-center text-center h-full min-h-[400px]">
                 <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center text-3xl mb-4">📋</div>
                 <p className="font-semibold text-gray-700 mb-1">No document uploaded yet</p>
-                <p className="text-sm text-gray-400">Upload a CV, transcript or certificate on the left to see AI-powered analysis here</p>
+                <p className="text-sm text-gray-400">Upload a CV, transcript, or certificate to extract profile details for mentor matching and opportunity guidance.</p>
               </div>
             )}
 
@@ -263,8 +263,8 @@ export default function DocumentsPage() {
                         <div className="rounded-xl bg-green-50 border border-green-200 p-4 flex items-center gap-3">
                           <span className="text-2xl">✅</span>
                           <div>
-                            <p className="font-semibold text-green-800 text-sm">Profile created successfully!</p>
-                            <p className="text-xs text-green-600">Your profile has been updated from this document.</p>
+                            <p className="font-semibold text-green-800 text-sm">Mentorship profile created successfully!</p>
+                            <p className="text-xs text-green-600">Your profile has been updated for mentor matching and opportunity guidance.</p>
                           </div>
                         </div>
                       ) : (
@@ -276,10 +276,10 @@ export default function DocumentsPage() {
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
                               </svg>
-                              Extracting profile data...
+                              Extracting mentorship profile data...
                             </>
                           ) : (
-                            <><span>⚡</span> Create Profile from this Document</>
+                            <><span>⚡</span> Create Mentorship Profile</>
                           )}
                         </button>
                       )}

@@ -38,8 +38,8 @@ export default function MatchPage() {
     try {
       const data = await evaluateMatch({ opportunity: opp, save_opportunity: saveOpp });
       setResult(data.result);
-      if (saveOpp) showToast('Match evaluated and opportunity saved!');
-      else showToast('Match evaluated!');
+      if (saveOpp) showToast('Opportunity fit checked and saved!');
+      else showToast('Opportunity fit checked!');
     } catch (err) {
       showToast(err.response?.data?.error || 'Evaluation failed', 'error');
     } finally {
@@ -49,7 +49,7 @@ export default function MatchPage() {
 
   return (
     <div>
-      <PageWrapper title="Check Match" subtitle="Paste any opportunity and see how well you match it">
+      <PageWrapper title="Opportunity Fit Check" subtitle="Evaluate how a mentor-recommended or self-discovered opportunity aligns with your profile and goals.">
         <div className="grid lg:grid-cols-2 gap-6">
           {/* Left: Form */}
           <div className="card p-6">
@@ -79,25 +79,25 @@ export default function MatchPage() {
               </div>
               <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
                 <input type="checkbox" checked={saveOpp} onChange={e => setSaveOpp(e.target.checked)} className="rounded" />
-                Save to my opportunities database
+                Save to my opportunity ecosystem
               </label>
               <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-                {loading ? '🔍 Evaluating...' : '🎯 Evaluate Match'}
+                {loading ? '🔍 Evaluating...' : '🎯 Check Opportunity Fit'}
               </button>
             </form>
           </div>
 
           {/* Right: Result */}
           <div>
-            {loading && <LoadingSpinner text="AI is evaluating your match..." />}
+            {loading && <LoadingSpinner text="AI is checking alignment with your profile and goals..." />}
             {result && !loading && (
               <MatchResultCard result={result} opportunityTitle={opp.title} opportunity={opp} />
             )}
             {!result && !loading && (
               <div className="card p-6 flex flex-col items-center justify-center h-full min-h-[300px] text-center">
                 <div className="text-5xl mb-4">🎯</div>
-                <h3 className="text-gray-600 font-medium mb-1">Ready to evaluate</h3>
-                <p className="text-sm text-gray-400">Fill in the opportunity details and click evaluate</p>
+                <h3 className="text-gray-600 font-medium mb-1">Ready to check fit</h3>
+                <p className="text-sm text-gray-400">Add an opportunity from your mentor plan or personal search.</p>
               </div>
             )}
           </div>

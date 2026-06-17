@@ -92,8 +92,8 @@ export default function DiscoveryPage() {
   return (
     <div>
       <PageWrapper
-        title="Opportunity Discovery"
-        subtitle="AI-powered search strategies to find opportunities you might have missed"
+        title="Guided Opportunity Discovery"
+        subtitle="Find opportunities that extend your mentorship plan, profile strengths, and growth goals."
         action={
           <button
             onClick={handleDiscover}
@@ -115,16 +115,16 @@ export default function DiscoveryPage() {
         {!result && !loading && !error && (
           <div className="card p-10 text-center">
             <div className="text-5xl mb-4">🔍</div>
-            <h2 className="font-bold text-gray-800 text-lg mb-2">Find Hidden Opportunities</h2>
+            <h2 className="font-bold text-gray-800 text-lg mb-2">Discover Opportunities Through Your Mentorship Plan</h2>
             <p className="text-gray-500 text-sm max-w-md mx-auto mb-6">
-              Our AI analyzes your profile and existing matches to generate smart search strategies
-              and suggest similar opportunities you might not know about.
+              Our AI analyzes your profile, goals, and existing fit checks to generate search strategies
+              for opportunities that support mentor-guided growth.
             </p>
             <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-8">
               {[
-                { icon: '🎯', title: 'Smart Queries', desc: 'Specific search terms tailored to you' },
+                { icon: '🤝', title: 'Mentor Context', desc: 'Search from your growth priorities' },
                 { icon: '💡', title: 'Hidden Gems', desc: 'Niche opportunities in your field' },
-                { icon: '🔗', title: 'Similar Matches', desc: 'Opportunities like your top matches' },
+                { icon: '🔗', title: 'Similar Fits', desc: 'Opportunities like your best fits' },
               ].map(({ icon, title, desc }) => (
                 <div key={title} className="p-3 rounded-xl bg-gray-50 border border-gray-100">
                   <div className="text-2xl mb-1">{icon}</div>
@@ -141,7 +141,7 @@ export default function DiscoveryPage() {
 
         {loading && (
           <div className="card p-10 text-center">
-            <LoadingSpinner text="AI is analyzing your profile and discovering opportunities…" />
+            <LoadingSpinner text="AI is analyzing your profile, goals, and opportunity ecosystem…" />
             <p className="text-xs text-gray-400 mt-3">This may take 20–30 seconds</p>
           </div>
         )}
@@ -161,7 +161,7 @@ export default function DiscoveryPage() {
           <div className="space-y-6">
             {/* Strategic Recommendation */}
             <div className="card p-5 border-l-4 border-l-primary-500 bg-primary-50">
-              <h2 className="font-semibold text-primary-800 mb-2">🤖 AI Strategy</h2>
+              <h2 className="font-semibold text-primary-800 mb-2">🤖 Mentor-Guided Strategy</h2>
               <p className="text-sm text-primary-700">{result.recommendation}</p>
             </div>
 
@@ -215,7 +215,7 @@ export default function DiscoveryPage() {
               {/* Right — Similar Opportunities */}
               <div className="space-y-4">
                 <div className="card p-5">
-                  <h2 className="font-semibold text-gray-800 mb-4">🔗 Similar to Your Matches</h2>
+                    <h2 className="font-semibold text-gray-800 mb-4">🔗 Similar to Your Best Fits</h2>
                   {result.similar_opportunities?.length > 0 ? (
                     <div className="space-y-3">
                       {result.similar_opportunities.map((opp, i) => (
@@ -223,7 +223,7 @@ export default function DiscoveryPage() {
                       ))}
                     </div>
                   ) : (
-                    <p className="text-sm text-gray-400">No similar opportunities found. Evaluate some opportunities first to get better suggestions.</p>
+                    <p className="text-sm text-gray-400">No similar opportunities found. Check a few opportunity fits first to get better suggestions.</p>
                   )}
                 </div>
 

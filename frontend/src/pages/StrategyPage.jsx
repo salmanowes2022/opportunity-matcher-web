@@ -9,27 +9,27 @@ import { getOpportunities } from '../api/opportunities.api';
 const STRATEGY_MODES = [
   {
     key: 'full_analysis',
-    label: 'Full Analysis',
-    icon: '🔍',
-    description: 'Deep AI analysis of all opportunities against your profile with ranked recommendations',
+    label: 'Mentorship Plan',
+    icon: '🤝',
+    description: 'Analyze your profile, goals, and opportunity ecosystem to clarify the mentor guidance you need.',
   },
   {
     key: 'gap_action_plan',
-    label: 'Gap Action Plan',
+    label: 'Development Plan',
     icon: '📋',
-    description: 'Identify skill and experience gaps then generate a step-by-step plan to close them',
+    description: 'Identify skill and experience gaps, then turn mentor advice into practical next steps.',
   },
   {
     key: 'application_roadmap',
-    label: 'Application Roadmap',
+    label: 'Opportunity Roadmap',
     icon: '🗺️',
-    description: 'Build a timeline and checklist for applying to your top opportunities',
+    description: 'Build a timeline for opportunities that support your mentor-guided development path.',
   },
   {
     key: 'profile_optimization',
-    label: 'Profile Optimization',
+    label: 'Profile Readiness',
     icon: '⚡',
-    description: 'Get AI suggestions to strengthen your profile for maximum match scores',
+    description: 'Strengthen your profile for better mentor matching, guidance, and opportunity fit.',
   },
 ];
 
@@ -91,7 +91,7 @@ function ProfileOptimizationResult({ data }) {
         <div className="flex items-center justify-around py-2">
           <ScoreRing value={data.profile_strength_score ?? 0} max={10} label="Strength Score" color="#6366f1" />
           <ScoreRing value={data.completeness_percentage ?? 0} max={100} label="Completeness %" color="#10b981" />
-          <ScoreRing value={Math.round((data.match_potential_increase ?? 0) * 10) / 10} max={10} label="Match Potential +" color="#f59e0b" />
+          <ScoreRing value={Math.round((data.match_potential_increase ?? 0) * 10) / 10} max={10} label="Guidance Potential +" color="#f59e0b" />
         </div>
       </Section>
 
@@ -158,7 +158,7 @@ function ApplicationStrategyResult({ data }) {
 
       {/* Prioritized applications */}
       {data.prioritized_applications?.length > 0 && (
-        <Section icon="🎯" title="Prioritized Applications" accent="green">
+        <Section icon="🎯" title="Mentor-Guided Opportunities" accent="green">
           <div className="space-y-3">
             {data.prioritized_applications.map((app, i) => (
               <div key={i} className="bg-white rounded-lg p-4 border border-green-100">
@@ -170,7 +170,7 @@ function ApplicationStrategyResult({ data }) {
                   />
                 </div>
                 <div className="flex flex-wrap gap-2 text-xs text-gray-500 mb-2">
-                  <span>🎯 Match: {Math.round((app.match_score ?? 0) * 100)}%</span>
+                  <span>🎯 Fit: {Math.round((app.match_score ?? 0) * 100)}%</span>
                   <span>✅ Success: {Math.round((app.success_probability ?? 0) * 100)}%</span>
                   <span>⏱ {app.estimated_effort_hours}h effort</span>
                   {app.deadline && <span>📅 {app.deadline}</span>}
@@ -242,8 +242,8 @@ function StrategyResults({ result }) {
       {/* Header */}
       <div className="px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-primary-50 to-white flex items-center justify-between">
         <div>
-          <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Strategy Complete</p>
-          <h3 className="font-semibold text-gray-800 mt-0.5">AI Analysis Results</h3>
+          <p className="text-xs text-gray-400 font-medium uppercase tracking-wider">Mentorship Strategy Complete</p>
+          <h3 className="font-semibold text-gray-800 mt-0.5">Guidance Plan Results</h3>
         </div>
         <div className="flex items-center gap-2">
           <span className="text-xs text-gray-500">Success probability:</span>
@@ -330,7 +330,7 @@ function OpportunityPicker({ opportunities, selected, onChange }) {
   if (!opportunities.length) return null;
   return (
     <div>
-      <label className="label">Focus on specific opportunities (optional)</label>
+      <label className="label">Include specific opportunities in the mentor-guided plan (optional)</label>
       <div className="space-y-1 max-h-44 overflow-y-auto border border-gray-200 rounded-lg p-2 bg-white">
         {opportunities.map(opp => (
           <label key={opp.id} className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 p-1.5 rounded">
@@ -386,7 +386,7 @@ export default function StrategyPage() {
 
   return (
     <div>
-      <PageWrapper title="AI Strategy" subtitle="Let AI build your personalized opportunity strategy">
+      <PageWrapper title="Mentor Strategy" subtitle="Build a personalized guidance plan, then connect it to relevant opportunities.">
         <div className="grid lg:grid-cols-3 gap-6 items-start">
 
           {/* ── Left: Config panel ── */}
@@ -394,7 +394,7 @@ export default function StrategyPage() {
             <div className="card p-5 space-y-5">
               {/* Mode selector */}
               <div>
-                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Strategy Mode</p>
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Mentorship Mode</p>
                 <div className="space-y-2">
                   {STRATEGY_MODES.map(m => (
                     <button key={m.key} onClick={() => setMode(m.key)}
@@ -427,7 +427,7 @@ export default function StrategyPage() {
                   onChange={e => setNotes(e.target.value)}
                   className="input-field resize-none"
                   rows={3}
-                  placeholder="Any specific goals, constraints, or focus areas..."
+                  placeholder="Any mentor preferences, growth goals, constraints, or opportunity focus areas..."
                 />
               </div>
 
@@ -443,10 +443,10 @@ export default function StrategyPage() {
             <div className="card p-4 bg-blue-50 border border-blue-100">
               <h4 className="text-sm font-semibold text-blue-800 mb-2">💡 Tips</h4>
               <ul className="text-xs text-blue-700 space-y-1.5">
-                <li>• Complete your profile first for better results</li>
-                <li>• Save opportunities to get targeted advice</li>
-                <li>• Run Gap Action Plan to know what to improve</li>
-                <li>• Use Application Roadmap before deadlines</li>
+                <li>• Complete your profile first for stronger mentor recommendations</li>
+                <li>• Add goals and challenges you want a mentor to help with</li>
+                <li>• Save opportunities so the plan can connect guidance to action</li>
+                <li>• Use the roadmap before deadlines and mentor conversations</li>
               </ul>
             </div>
           </div>
@@ -455,17 +455,17 @@ export default function StrategyPage() {
           <div className="lg:col-span-2">
             {loading && (
               <div className="card p-12 flex flex-col items-center justify-center min-h-[400px]">
-                <LoadingSpinner size="lg" text="AI is building your strategy..." />
+                <LoadingSpinner size="lg" text="AI is building your mentorship strategy..." />
                 <p className="text-xs text-gray-400 mt-4">This may take 20–30 seconds</p>
               </div>
             )}
 
             {!loading && !result && (
               <div className="card p-12 flex flex-col items-center justify-center text-center min-h-[400px]">
-                <div className="w-20 h-20 rounded-2xl bg-primary-50 flex items-center justify-center text-4xl mb-4">🤖</div>
-                <h3 className="text-gray-700 font-semibold text-lg mb-2">Ready to strategize</h3>
+                <div className="w-20 h-20 rounded-2xl bg-primary-50 flex items-center justify-center text-4xl mb-4">🤝</div>
+                <h3 className="text-gray-700 font-semibold text-lg mb-2">Ready to plan your mentorship journey</h3>
                 <p className="text-sm text-gray-400 max-w-xs">
-                  Select a strategy mode on the left and click Run to get AI-powered, personalized recommendations
+                  Select a mentorship mode on the left and click Run to get personalized guidance and next steps.
                 </p>
               </div>
             )}

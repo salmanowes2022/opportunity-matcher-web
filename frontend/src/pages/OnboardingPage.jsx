@@ -6,9 +6,9 @@ import { saveProfile } from '../api/profile.api';
 const OPP_TYPES = ['Scholarship', 'Fellowship', 'Job', 'Academic Program', 'Internship'];
 
 const STEPS = [
-  { id: 1, icon: '👋', title: 'Welcome', subtitle: 'Let\'s get you set up in 3 simple steps' },
-  { id: 2, icon: '📄', title: 'Upload Your CV', subtitle: 'We\'ll extract your profile automatically' },
-  { id: 3, icon: '🎯', title: 'Your Goals', subtitle: 'What kind of opportunities are you looking for?' },
+  { id: 1, icon: '👋', title: 'Welcome', subtitle: 'Let\'s shape your mentorship journey' },
+  { id: 2, icon: '📄', title: 'Upload Your CV', subtitle: 'We\'ll extract your mentorship profile' },
+  { id: 3, icon: '🤝', title: 'Your Goals', subtitle: 'What guidance are you looking for?' },
 ];
 
 function ProgressBar({ step }) {
@@ -36,17 +36,17 @@ function ProgressBar({ step }) {
 function StepWelcome({ onNext }) {
   return (
     <div className="text-center py-6">
-      <div className="text-6xl mb-4">🎯</div>
-      <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to Opportunity Matcher!</h2>
+      <div className="text-6xl mb-4">🤝</div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-3">Welcome to Mentor Match!</h2>
       <p className="text-gray-500 text-sm max-w-md mx-auto mb-8">
-        We'll help you find scholarships, fellowships, jobs, and academic programs perfectly matched to your profile.
+        We help you connect with the right mentors, turn guidance into clear next steps, and discover opportunities that support your goals.
         Setup takes less than 2 minutes.
       </p>
       <div className="grid grid-cols-3 gap-4 max-w-lg mx-auto mb-10">
         {[
-          { icon: '📄', label: 'Upload CV', desc: 'Auto-extract your profile' },
-          { icon: '🎯', label: 'AI Matching', desc: 'Score any opportunity instantly' },
-          { icon: '✍️', label: 'AI Writing', desc: 'Cover letters & statements' },
+          { icon: '📄', label: 'Build Profile', desc: 'Capture your path and goals' },
+          { icon: '🤝', label: 'Mentor Fit', desc: 'Clarify the guidance you need' },
+          { icon: '🎯', label: 'Opportunity Fit', desc: 'Find aligned next steps' },
         ].map(({ icon, label, desc }) => (
           <div key={label} className="p-4 rounded-xl bg-primary-50 border border-primary-100">
             <div className="text-3xl mb-2">{icon}</div>
@@ -56,7 +56,7 @@ function StepWelcome({ onNext }) {
         ))}
       </div>
       <button onClick={onNext} className="btn-primary px-10 py-3 text-base">
-        Get Started →
+        Start Mentorship Setup →
       </button>
     </div>
   );
@@ -128,7 +128,7 @@ function StepCV({ onNext, onSkip }) {
             <div>
               <div className="text-4xl mb-3">📁</div>
               <p className="font-semibold text-gray-700">Drop your CV here or click to browse</p>
-              <p className="text-xs text-gray-400 mt-1">PDF, Word, or Image · Max 10MB</p>
+              <p className="text-xs text-gray-400 mt-1">We use it to shape mentor matching, goals, and opportunity recommendations · Max 10MB</p>
             </div>
           )}
         </label>
@@ -208,7 +208,7 @@ function StepGoals({ onFinish }) {
       </div>
 
       <div>
-        <label className="label">What types of opportunities are you seeking?</label>
+        <label className="label">Which opportunities should support your mentorship plan?</label>
         <div className="flex flex-wrap gap-2 mt-1">
           {OPP_TYPES.map(t => (
             <button
@@ -227,13 +227,13 @@ function StepGoals({ onFinish }) {
       </div>
 
       <div>
-        <label className="label">Primary goal</label>
+        <label className="label">Primary mentorship goal</label>
         <textarea
           value={form.primary_goal}
           onChange={e => setForm(f => ({ ...f, primary_goal: e.target.value }))}
           className="input-field"
           rows={3}
-          placeholder="e.g., I'm looking for fully-funded PhD programs in Computer Science in Europe, or scholarship programs to study abroad..."
+          placeholder="e.g., I want a mentor who can guide me toward a funded PhD, research experience, or a career transition..."
         />
       </div>
 
@@ -252,7 +252,7 @@ function StepGoals({ onFinish }) {
         disabled={saving}
         className="btn-primary w-full py-3 text-base"
       >
-        {saving ? 'Setting up…' : '🚀 Go to Dashboard'}
+        {saving ? 'Setting up…' : '🚀 Go to Mentorship Dashboard'}
       </button>
     </div>
   );

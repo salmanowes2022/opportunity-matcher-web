@@ -25,15 +25,18 @@ export default function ProfilePage() {
   return (
     <div>
       <PageWrapper
-        title="My Profile"
-        subtitle="Your profile is used for all opportunity matching and material generation"
+        title="Mentorship Profile"
+        subtitle="Your profile powers mentor matching first, then opportunity discovery and application support."
         action={profile && !editing && (
           <button onClick={() => setEditing(true)} className="btn-secondary">Edit Profile</button>
         )}
       >
         {(!profile || editing) ? (
           <div className="card p-6">
-            <h2 className="text-lg font-semibold mb-4">{profile ? 'Edit Profile' : 'Create Your Profile'}</h2>
+            <h2 className="text-lg font-semibold mb-2">{profile ? 'Edit Mentorship Profile' : 'Create Your Mentorship Profile'}</h2>
+            <p className="text-sm text-gray-500 mb-5">
+              Share your background, goals, and strengths so the platform can identify the right guidance relationships and recommend aligned opportunities.
+            </p>
             <ProfileForm initialData={profile} onSaved={handleSaved} />
             {editing && (
               <button onClick={() => setEditing(false)} className="btn-secondary mt-3 w-full">Cancel</button>
@@ -87,7 +90,7 @@ export default function ProfilePage() {
                   <p className="text-sm text-gray-700">{profile.achievements}</p>
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Goals</h3>
+                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-1">Mentorship Goals</h3>
                   <p className="text-sm text-gray-700">{profile.goals}</p>
                 </div>
               </div>

@@ -86,14 +86,14 @@ export default function HistoryPage() {
 
   return (
     <div>
-      <PageWrapper title="Evaluation History" subtitle="All your past match evaluations">
+      <PageWrapper title="Fit Check History" subtitle="Past opportunity fit checks from your mentorship ecosystem">
         {/* Stats */}
         {stats && (
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {[
-              { label: 'Total Evaluations', value: stats.total },
+              { label: 'Total Fit Checks', value: stats.total },
               { label: 'Average Score', value: formatScore(stats.avg_score) },
-              { label: 'Best Match', value: formatScore(stats.best_match) },
+              { label: 'Best Opportunity Fit', value: formatScore(stats.best_match) },
               { label: 'Materials Generated', value: stats.materials_generated },
             ].map(s => (
               <div key={s.label} className="card p-4 text-center">
@@ -137,9 +137,9 @@ export default function HistoryPage() {
         {loading ? (
           <LoadingSpinner text="Loading…" />
         ) : history.length === 0 ? (
-          <EmptyState icon="📊" title="No evaluations found"
-            description={search || scoreFilter.min > 0 ? "No results match your filters" : "Go to Check Match to evaluate your first opportunity"}
-            action={!search && <button onClick={() => navigate('/match')} className="btn-primary px-6">Evaluate an Opportunity</button>}
+          <EmptyState icon="📊" title="No fit checks found"
+            description={search || scoreFilter.min > 0 ? "No results match your filters" : "Check the fit of your first mentor-guided opportunity."}
+            action={!search && <button onClick={() => navigate('/match')} className="btn-primary px-6">Check Opportunity Fit</button>}
           />
         ) : (
           <>
@@ -184,7 +184,7 @@ export default function HistoryPage() {
                                 </div>
                                 <div className="flex gap-2 mt-3">
                                   <button onClick={() => navigate('/match', { state: { opp: { title: item.opportunity_title, opp_type: item.opportunity_type, description: item.opportunity_description || '', requirements: '' } } })}
-                                    className="btn-secondary text-xs px-3 py-1.5">🔄 Re-evaluate</button>
+                                    className="btn-secondary text-xs px-3 py-1.5">🔄 Re-check Fit</button>
                                   <button onClick={() => navigate('/materials', { state: { opportunityTitle: item.opportunity_title } })}
                                     className="btn-secondary text-xs px-3 py-1.5">✍️ Generate Material</button>
                                 </div>

@@ -118,12 +118,12 @@ export default function InterviewPrepPage() {
     <div>
       <PageWrapper
         title="Interview Prep"
-        subtitle="AI-powered interview coaching tailored to your profile and target opportunity"
+        subtitle="Prepare for mentor-recommended interviews with coaching tailored to your profile, goals, and target opportunity."
       >
         {/* Opportunity Selector */}
         {!opp ? (
           <div className="card p-6 mb-6">
-            <h2 className="font-semibold text-gray-800 mb-4">Select an Opportunity</h2>
+            <h2 className="font-semibold text-gray-800 mb-4">Select a Mentor-Guided Opportunity</h2>
             {opportunities.length === 0 ? (
               <div className="text-center py-6">
                 <p className="text-gray-400 text-sm mb-3">No opportunities saved yet</p>

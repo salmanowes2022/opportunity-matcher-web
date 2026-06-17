@@ -40,9 +40,9 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary-900 via-primary-800 to-primary-600 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8">
         <div className="text-center mb-8">
-          <div className="text-5xl mb-3">🎯</div>
+          <div className="text-5xl mb-3">🤝</div>
           <h1 className="text-2xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-gray-500 text-sm mt-2">Start matching opportunities today</p>
+          <p className="text-gray-500 text-sm mt-2">Start connecting with mentors today</p>
         </div>
 
         <form onSubmit={handleSignup} className="space-y-4">
